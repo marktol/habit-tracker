@@ -1,7 +1,11 @@
 import { FormEvent, useState } from "react";
 import { useAppDispatch } from "../../utils/hooks/hooks";
 import { addHabit, habitType } from "../../utils/redux/habitsList";
-import { FormLabel, FormSection, FormSubmitButton } from "./addHabit.styled";
+import {
+  FormLabel,
+  FormSection,
+  FormSubmitButton,
+} from "./habitCreationForm.styled";
 import {
   FormControl,
   MenuItem,
@@ -10,7 +14,7 @@ import {
   Typography,
 } from "@mui/material";
 
-const AddHabit = () => {
+const HabitCreationForm = () => {
   const dispatch = useAppDispatch();
 
   const [habitName, setHabitName] = useState("");
@@ -23,23 +27,21 @@ const AddHabit = () => {
     setType(e.target.value);
   };
 
-  const addFilledHabit = (event: FormEvent) => {
-    console.log("save clicked");
+  const onAddHabit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (habitName.length > 0) {
-      dispatch(addHabit({ id: habitName, name: habitName, habitType: type }));
-      setHabitName("");
-    }
+    dispatch(addHabit({ id: habitName, name: habitName, habitType: type }));
+    setHabitName("");
   };
 
   return (
     <div>
       <h1>Add Habit</h1>
-      <form onSubmit={addFilledHabit}>
+      <form onSubmit={onAddHabit}>
         <FormSection>
           <FormLabel variant="h6">Name: </FormLabel>
           <TextField
+            required
             type="name"
             onChange={onHabitNameChange}
             value={habitName}
@@ -47,12 +49,7 @@ const AddHabit = () => {
         </FormSection>
         <FormSection>
           <FormLabel variant="h6">Type: </FormLabel>
-          <Select
-            label="Age *"
-            name="type"
-            onChange={onTypeChange}
-            value={type}
-          >
+          <Select name="type" onChange={onTypeChange} value={type}>
             {Object.values(habitType).map((el) => {
               return (
                 <MenuItem key={el} value={el}>
@@ -72,4 +69,4 @@ const AddHabit = () => {
   );
 };
 
-export default AddHabit;
+export default HabitCreationForm;

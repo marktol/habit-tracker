@@ -38,9 +38,8 @@ export const habitsList = createSlice({
   reducers: {
     addHabit: (state, action) => {
       const { id, name, habitType } = action.payload;
-      const checkedDates: Array<IRecord> = [];
       if (!state.habits.find((el) => el.id === id)) {
-        state.habits.push({ id, name, habitType, checkedDates });
+        state.habits.push({ id, name, habitType, checkedDates: [] });
       }
     },
     deleteHabit(state, action) {
@@ -61,7 +60,6 @@ export const habitsList = createSlice({
 
         return habit;
       });
-      console.log(state.habits);
     },
   },
 });

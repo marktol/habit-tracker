@@ -1,5 +1,5 @@
-import AddHabit from "../../components/addHabit/addHabit";
-import HabitTrackerList from "../../components/habitTrackerList/habitTrackerList";
+import HabitCreationForm from "../../components/habitCreationForm/habitCreationForm";
+import HabitTracker from "../../components/habitTracker/habitTracker";
 import { useAppSelector } from "../../utils/hooks/hooks";
 import { selectHabitsList } from "../../utils/redux/habitsList";
 
@@ -8,8 +8,8 @@ const Home = () => {
 
   return (
     <div>
-      <AddHabit />
-      {habitsList.habits.length > 0 && <HabitTrackerList />}
+      <HabitCreationForm />
+      {habitsList.habits.length > 0 && <HabitTracker />}
     </div>
   );
 };
