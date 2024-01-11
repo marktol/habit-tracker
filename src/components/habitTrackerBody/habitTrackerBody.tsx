@@ -38,14 +38,13 @@ const HabitTrackerBody = ({
       changeHabitValueRecord({ id: id, date: date, value: e.target.value })
     );
   };
-  const smth = true;
 
   return (
     <TableBody>
       {daysInTable.map((el) => (
         <TableRow key={el}>
           <TableCell>
-            {el}.{month.month()}
+            {el}.{month.month() + 1}
           </TableCell>
           {habits &&
             habits.map((habit: IHabit) => {
