@@ -38,6 +38,7 @@ const HabitTrackerBody = ({
       changeHabitValueRecord({ id: id, date: date, value: e.target.value })
     );
   };
+  const smth = true;
 
   return (
     <TableBody>
