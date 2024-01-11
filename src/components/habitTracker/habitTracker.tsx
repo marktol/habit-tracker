@@ -17,6 +17,7 @@ const HabitTracker = () => {
 
   const [month, setMonth] = useState(dayjs(new Date()));
   const [year, setYear] = useState(dayjs(new Date()));
+  const ss = "asdf";
 
   return (
     <>
