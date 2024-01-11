@@ -17,7 +17,6 @@ const HabitTracker = () => {
 
   const [month, setMonth] = useState(dayjs(new Date()));
   const [year, setYear] = useState(dayjs(new Date()));
-  const ss = "asdf";
 
   return (
     <>
@@ -49,8 +48,8 @@ const HabitTracker = () => {
           <HabitTrackerHead habits={habitsList.habits} />
           <HabitTrackerBody
             habits={habitsList.habits}
-            month={month.month()}
-            year={year.year()}
+            year={year}
+            month={month}
           />
         </Table>
       </TableContainer>

@@ -45,7 +45,7 @@ export const habitsList = createSlice({
     deleteHabit(state, action) {
       state.habits = state.habits.filter((el) => el.id !== action.payload.id);
     },
-    changeHabitRecord(state, action) {
+    changeHabitCheckRecord(state, action) {
       const { id, date } = action.payload;
       state.habits = state.habits.map((habit) => {
         if (habit.id == id) {
@@ -61,10 +61,38 @@ export const habitsList = createSlice({
         return habit;
       });
     },
+    changeHabitValueRecord(state, action) {
+      const { id, date, value } = action.payload;
+      state.habits = state.habits.map((habit) => {
+        if (habit.id == id) {
+          if (habit.checkedDates?.find((record) => record.date === date)) {
+            if (!value) {
+              habit.checkedDates = habit.checkedDates.filter((record) => {
+                return record.date !== date;
+              });
+            } else {
+              habit.checkedDates = habit.checkedDates.map((el) => {
+                if (el.date === date) el.info = value;
+                return el;
+              });
+            }
+          } else {
+            habit.checkedDates?.push({ date: date, info: value });
+          }
+        }
+
+        return habit;
+      });
+    },
   },
 });
 
-export const { addHabit, deleteHabit, changeHabitRecord } = habitsList.actions;
+export const {
+  addHabit,
+  deleteHabit,
+  changeHabitCheckRecord,
+  changeHabitValueRecord,
+} = habitsList.actions;
 export const selectHabitsList = (state: any) => state.habitsList;
 
 export default habitsList.reducer;

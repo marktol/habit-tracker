@@ -1,31 +1,42 @@
 import { TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import { useAppDispatch } from "../../utils/hooks/hooks";
-import { IHabit, changeHabitRecord } from "../../utils/redux/habitsList";
+import {
+  IHabit,
+  changeHabitCheckRecord,
+  changeHabitValueRecord,
+} from "../../utils/redux/habitsList";
 import Checkbox from "@mui/material/Checkbox";
+import { ChangeEvent } from "react";
+import dayjs from "dayjs";
 
 const HabitTrackerBody = ({
   habits,
-  month,
   year,
+  month,
 }: {
   habits: IHabit[];
-  month: number;
-  year: number;
+  year: dayjs.Dayjs;
+  month: dayjs.Dayjs;
 }) => {
   const dispatch = useAppDispatch();
 
-  function getDaysInMonth(month: number, year: number) {
-    return new Date(year, month, 0).getDate();
-  }
-  const countOfDays: number = getDaysInMonth(month, year);
-
   const daysInTable: Array<number> = Array.from(
-    { length: countOfDays },
+    { length: month.daysInMonth() },
     (_, i) => i + 1
   );
 
   const onCheckHabit = (id: string, date: string) => {
-    dispatch(changeHabitRecord({ id: id, date: date }));
+    dispatch(changeHabitCheckRecord({ id: id, date: date }));
+  };
+
+  const onChangeValueHabit = (
+    id: string,
+    date: string,
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    dispatch(
+      changeHabitValueRecord({ id: id, date: date, value: e.target.value })
+    );
   };
 
   return (
@@ -33,30 +44,36 @@ const HabitTrackerBody = ({
       {daysInTable.map((el) => (
         <TableRow key={el}>
           <TableCell>
-            {el}.{month}
+            {el}.{month.month()}
           </TableCell>
           {habits &&
             habits.map((habit: IHabit) => {
-              if (habit.habitType === "checkBox") {
-                return (
-                  <TableCell key={`${habit.name}${year}${month}${el}`}>
+              const currentDate = `${year}${month}${el}`;
+              return (
+                <TableCell key={`${habit.name}${currentDate}`}>
+                  {habit.habitType === "checkBox" && (
                     <Checkbox
                       checked={habit.checkedDates?.some(
-                        (check) => check.date === `${year}${month}${el}`
+                        (check) => check.date === currentDate
                       )}
-                      onClick={() =>
-                        onCheckHabit(habit.id, `${year}${month}${el}`)
+                      onClick={() => onCheckHabit(habit.id, currentDate)}
+                    />
+                  )}
+                  {habit.habitType === "value" && (
+                    <TextField
+                      type="name"
+                      value={
+                        habit.checkedDates?.find(
+                          (check) => check.date === currentDate
+                        )?.info || ""
+                      }
+                      onChange={(e) =>
+                        onChangeValueHabit(habit.id, currentDate, e)
                       }
                     />
-                  </TableCell>
-                );
-              } else {
-                return (
-                  <TableCell key={`${year}${month}${el}`}>
-                    <TextField type="name" />
-                  </TableCell>
-                );
-              }
+                  )}
+                </TableCell>
+              );
             })}
         </TableRow>
       ))}

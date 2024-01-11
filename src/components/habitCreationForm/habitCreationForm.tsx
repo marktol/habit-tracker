@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useAppDispatch } from "../../utils/hooks/hooks";
 import { addHabit, habitType } from "../../utils/redux/habitsList";
 import {
@@ -20,7 +20,7 @@ const HabitCreationForm = () => {
   const [habitName, setHabitName] = useState("");
   const [type, setType] = useState(habitType.checkBox);
 
-  const onHabitNameChange = (e: any) => {
+  const onHabitNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     setHabitName(e.target.value);
   };
   const onTypeChange = (e: any) => {
