@@ -4,60 +4,52 @@ import { useAppSelector } from "../../utils/hooks/hooks";
 import { IHabitsList, selectHabitsList } from "../../utils/redux/habitsList";
 
 import { Table, TableContainer } from "@mui/material";
-import { SkipNext, SkipPrevious } from "@mui/icons-material";
-import IconButton from "@mui/material/IconButton";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import HabitTrackerHead from "../habitTrackerHead/habitTrackerHead";
 import HabitTrackerBody from "../habitTrackerBody/habitTrackerBody";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
 
 const HabitTracker = () => {
   const habitsList: IHabitsList = useAppSelector(selectHabitsList);
 
-  const [month, setMonth] = useState(new Date().getMonth() + 1);
-  const [year, setYear] = useState(new Date().getFullYear());
-
-  const onNextYearButtonClick = () => {
-    setYear(year + 1);
-  };
-
-  const onPrevYearButtonClick = () => {
-    setYear(year - 1);
-  };
-  const onNextMonthButtonClick = () => {
-    setMonth(month + 1);
-  };
-
-  const onPrevMonthButtonClick = () => {
-    setMonth(month - 1);
-  };
+  const [month, setMonth] = useState(dayjs(new Date()));
+  const [year, setYear] = useState(dayjs(new Date()));
 
   return (
     <>
-      <h1>
-        <IconButton aria-label="prev" onClick={onPrevYearButtonClick}>
-          <SkipPrevious />
-        </IconButton>
-        {year}
-        <IconButton aria-label="next" onClick={onNextYearButtonClick}>
-          <SkipNext />
-        </IconButton>
-      </h1>
-      <h1>
-        <IconButton aria-label="prev" onClick={onPrevMonthButtonClick}>
-          <SkipPrevious />
-        </IconButton>
-        {month}
-        <IconButton aria-label="next" onClick={onNextMonthButtonClick}>
-          <SkipNext />
-        </IconButton>
-      </h1>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          value={year}
+          label={'"year"'}
+          views={["year"]}
+          onChange={(pickedYear) => {
+            if (pickedYear) {
+              setYear(pickedYear);
+            }
+          }}
+        />
+        <DatePicker
+          value={month}
+          label={'"month"'}
+          views={["month"]}
+          onChange={(pickedMonth) => {
+            if (pickedMonth) {
+              setMonth(pickedMonth);
+            }
+          }}
+        />
+      </LocalizationProvider>
+
       <TableContainer>
         <Table>
           <HabitTrackerHead habits={habitsList.habits} />
           <HabitTrackerBody
             habits={habitsList.habits}
-            month={month}
-            year={year}
+            month={month.month()}
+            year={year.year()}
           />
         </Table>
       </TableContainer>

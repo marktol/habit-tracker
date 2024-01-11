@@ -45,7 +45,7 @@ export const habitsList = createSlice({
     deleteHabit(state, action) {
       state.habits = state.habits.filter((el) => el.id !== action.payload.id);
     },
-    addHabitRecord(state, action) {
+    changeHabitRecord(state, action) {
       const { id, date } = action.payload;
       state.habits = state.habits.map((habit) => {
         if (habit.id == id) {
@@ -64,7 +64,7 @@ export const habitsList = createSlice({
   },
 });
 
-export const { addHabit, deleteHabit, addHabitRecord } = habitsList.actions;
+export const { addHabit, deleteHabit, changeHabitRecord } = habitsList.actions;
 export const selectHabitsList = (state: any) => state.habitsList;
 
 export default habitsList.reducer;

@@ -1,6 +1,6 @@
 import { TableBody, TableCell, TableRow, TextField } from "@mui/material";
 import { useAppDispatch } from "../../utils/hooks/hooks";
-import { IHabit, addHabitRecord } from "../../utils/redux/habitsList";
+import { IHabit, changeHabitRecord } from "../../utils/redux/habitsList";
 import Checkbox from "@mui/material/Checkbox";
 
 const HabitTrackerBody = ({
@@ -25,7 +25,7 @@ const HabitTrackerBody = ({
   );
 
   const onCheckHabit = (id: string, date: string) => {
-    dispatch(addHabitRecord({ id: id, date: date }));
+    dispatch(changeHabitRecord({ id: id, date: date }));
   };
 
   return (
